@@ -15,43 +15,37 @@ function renameInstrumentsAfterTracks()
 	this.performEdit = function (context)
 	{
 		// define the track list
-		var trackList = context.mainTrackList;
+		let trackList = context.mainTrackList;
 
 		// if there are no tracks, do nothing
 		if (trackList.numTracks.count == 0) {return}
 		
-		/*  Read all of the racked instruments into two arrays.
-			loadedInstrumentNames:  holds the names for quick matching
-			instrumentURLs: holds the object URLs for addressing
-
-			Note: The numbers in the instrument URLs are static.  For example,
-			if you load 200 instruments and delete the first 199, the
-			remaining instrument URL will still be /Inst200, so we have to
-			check all possible iterations up to a reasonable number 
+		/*  Read all of the racked instruments into an array.
+			Push:  Instrument Name for matching
+			Push Next Index:  Instrument Object URL for addressing
 		*/
 
-		var InstrumentNames = new Array;
-		var InstrumentURLs = new Array;
+		let Instruments = new Array;
 
-		synthRack = Host.Objects.getObjectByUrl
+		let synthRack = Host.Objects.getObjectByUrl
 		("://hostapp/DocumentManager/ActiveDocument/Environment/Synths")
 	
 		for (i = 1; i < 501; i++)
 		{
 			// ---------------------------------------------------------------------------
 			//  the instrument URLs require leading zeros if the number is a single digit
-			//  Inst01, Inst02, etc, so search . test for each possible number
+			//  Inst01, Inst02, etc, so search and test for each possible number
 			// ---------------------------------------------------------------------------
 
 			if (i < 10)
 			{
-				// look for instrument #i when i is a single digit, use leading zero
+				// look for instrument #i when i is a single digit
 				var Instrument = synthRack.find("Inst0" + i)
 
 				if (Instrument)  // if it's found push the name and url to the arrays
 				{
-					InstrumentNames.push(Instrument.findParameter("deviceName").string)
-					InstrumentURLs.push("://hostapp/DocumentManager/ActiveDocument/Environment/Synths/Inst0"  + i)
+					Instruments.push(Instrument.findParameter("deviceName").string)
+					Instruments.push("://hostapp/DocumentManager/ActiveDocument/Environment/Synths/Inst0"  + i)
 				}
 			}
 			else
@@ -61,8 +55,8 @@ function renameInstrumentsAfterTracks()
 
 				if (Instrument)  // if it's found push the name and url to the arrays
 				{
-					InstrumentNames.push(Instrument.findParameter("deviceName").string)
-					InstrumentURLs.push("://hostapp/DocumentManager/ActiveDocument/Environment/Synths/Inst"  + i)
+					Instruments.push(Instrument.findParameter("deviceName").string)
+					Instruments.push("://hostapp/DocumentManager/ActiveDocument/Environment/Synths/Inst"  + i)
 				}	
 			}
 		}
@@ -70,32 +64,33 @@ function renameInstrumentsAfterTracks()
 		// ------------------------------------------------------------------------
 
 		// if there are no instruments found in the rack, do nothing.
-		if (InstrumentNames.length == 0) {return}
+		if (Instruments.length == 0) {return}
 
 		// ------------------------------------------------------------------------
 		
-		// iterate the tracks 
+		// iterate the tracks and do the thing
 		for (i = 0; i < trackList.numTracks; i++)
 		{ 
 			// get the current selected track
 			var track = trackList.getTrack(i);
 
-			// if it's not music track or it has not mixer channel, skip
+			// if it's not a music track or it has no mixer channel, skip it
 			if(track.channel.channelType != "MusicTrack"  || track.channel == undefined)
 				{continue}
 
 			// otherwise, get it's current instrument name for searching
 			var currentInstrumentName = track.channel.findParameter('outputDeviceList').string;
 
-			// find the current instrument name from above in the array of racked instruments
-			var index = InstrumentNames.indexOf(currentInstrumentName)
+			// find the current instrument name in the array of racked instruments
+			// no two instruments can have the same name, so any match is valid
+			var index = Instruments.indexOf(currentInstrumentName)
 
 			// if not found, do nothing
 			if (index < 0) {continue}
 		
 			// if the name is found in the array, use the URL string from
-			// the second array (same index) to target and rename the instrument
-			Host.Objects.getObjectByUrl	(InstrumentURLs[index])
+			// the next array index to target and rename the instrument
+			Host.Objects.getObjectByUrl	(Instruments [index + 1] )
 			.findParameter("deviceName").setValue(track.name, true)
 		}
 		
