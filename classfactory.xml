@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ClassFactory>
+	<ScriptClass
+		classID="{77A08650-AE95-50CD-6EAA-8EB036B6D259}"
+		category="EditTask"
+		subCategory="TrackEdit"
+		name="Rename Instruments After Tracks"
+		sourceFile="code.js"
+		functionName="createInstance">
+		<Attribute id="menuPriority" value="0"/>
+	</ScriptClass>
+</ClassFactory>
