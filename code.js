@@ -2,6 +2,8 @@
 {
 	this.interfaces =  [Host.Interfaces.IEditTask]
 
+	// ----------------------------------------------------------
+
 	this.prepareEdit = function (context)
 	{
 		return Host.Results.kResultOk;
