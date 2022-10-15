@@ -21,7 +21,7 @@
 
 		// --------------------------------------------
 
-		// This loads the racked instruments data into an array.
+		// This function loads all instrument names and object urls into an array
 		this.loadInstruments()
 
 		// if there are no instruments found in the rack, exit.
