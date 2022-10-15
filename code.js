@@ -83,7 +83,7 @@
 		{
 			if (i < 10)
 			{
-				// look for instrument i when i is a single digit
+				// look for instrument when i is a single digit
 				var instrument = instrumentRack.find("Inst0" + i)
 
 				if (instrument)  // if it's found, push the name and url to the array 
@@ -94,7 +94,7 @@
 			}
 			else
 			{
-				// look for instrument i when i is double digit or greater
+				// look for instrument when i is double digit or greater
 				var instrument = instrumentRack.find("Inst" + i)
 
 				if (instrument)  // if it's found, push the name and url to the array
