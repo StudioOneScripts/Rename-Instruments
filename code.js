@@ -59,7 +59,7 @@
 	}
 
 	// **************************************************************************
-	// ************* LOAD INSTRUMENT NAMES AND URLS FROM THE RACK ***************
+	// ******** FUNCTION TO LOAD INSTRUMENT NAMES AND URLS FROM THE RACK ********
 	// **************************************************************************
 
 	this.loadInstruments = function ()
