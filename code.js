@@ -10,21 +10,23 @@ function renameInstrumentsAfterTracks()
 		return Host.Results.kResultOk;
 	}
 
-	// -----------------------------------------------------------------
+	// ----------------------------------------------------------
 
 	this.performEdit = function (context)
 	{
 		// define the track list
 		let trackList = context.mainTrackList;
 
-		// if there are no tracks, do nothing
+		// if there are no tracks, exit
 		if (trackList.numTracks.count == 0) {return}
-		
-		/*  Read all of the racked instruments into an array.
-			Push:  Instrument Name for matching
-			Push Next Index:  Instrument Object URL for addressing
-		*/
 
+		// ------------------------------------------------------
+		
+		/*  We will read all of the racked instruments into an array.
+			Push:  Instrument Name for matching wih indexOf()
+			Next Index:  Instrument Object URL for addressing
+		*/
+		
 		let Instruments = new Array;
 
 		let synthRack = Host.Objects.getObjectByUrl
@@ -40,22 +42,22 @@ function renameInstrumentsAfterTracks()
 			if (i < 10)
 			{
 				// look for instrument #i when i is a single digit
-				var Instrument = synthRack.find("Inst0" + i)
+				var instrument = synthRack.find("Inst0" + i)
 
-				if (Instrument)  // if it's found push the name and url to the arrays
+				if (instrument)  // if it's found, push the name and url to the array
 				{
-					Instruments.push(Instrument.findParameter("deviceName").string)
+					Instruments.push(instrument.findParameter("deviceName").string)
 					Instruments.push("://hostapp/DocumentManager/ActiveDocument/Environment/Synths/Inst0"  + i)
 				}
 			}
 			else
 			{
 				// look for instrument #i when i is double digit or greater
-				var Instrument = synthRack.find("Inst" + i)
+				var instrument = synthRack.find("Inst" + i)
 
-				if (Instrument)  // if it's found push the name and url to the arrays
+				if (instrument)  // if it's found, push the name and url to the array
 				{
-					Instruments.push(Instrument.findParameter("deviceName").string)
+					Instruments.push(instrument.findParameter("deviceName").string)
 					Instruments.push("://hostapp/DocumentManager/ActiveDocument/Environment/Synths/Inst"  + i)
 				}	
 			}
