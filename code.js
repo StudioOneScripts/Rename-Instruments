@@ -1,4 +1,7 @@
-﻿function renameInstrumentsAfterTracks()
+﻿/* This script automatically renames all instruments that
+   are assigned to instrument tracks, after the tracks  */
+
+function renameInstrumentsAfterTracks()
 {
 	this.interfaces =  [Host.Interfaces.IEditTask]
 
@@ -14,80 +17,87 @@
 		// define the track list
 		var trackList = context.mainTrackList;
 
-		// if there are no selected tracks, do nothing
+		// if there are no tracks, do nothing
 		if (trackList.numTracks.count == 0) {return}
-
-		// ------------------------------------------------------------------------
 		
-		/*  Read all of the racked instruments into two arrays
+		/*  Read all of the racked instruments into two arrays.
 			loadedInstrumentNames:  holds the names for quick matching
 			instrumentURLs: holds the object URLs for addressing
 
-			The numbers in the instrument URLs are static.  For example,
+			Note: The numbers in the instrument URLs are static.  For example,
 			if you load 200 instruments and delete the first 199, the
-			remaining instrument URL still be /Inst200, so we have check
-			all possible iterations up to a reasonable number like 500
+			remaining instrument URL will still be /Inst200, so we have to
+			check all possible iterations up to a reasonable number 
 		*/
 
-		var loadedInstrumentNames = new Array;
-		var instrumentURLs = new Array;
+		var InstrumentNames = new Array;
+		var InstrumentURLs = new Array;
 
+		// look for instruments numbered up to 500
 		for (i = 1; i < 501; i++)
 		{
-			var rackedInst = ""
+			var Instrument = ""
 
-			// the URLs require leading zeros if less than 10
+			// ----------------------------------------------
+			// the instrument URLs will require leading zeros
+			// if less than 10.  Inst01, Inst02, etc, etc
+			// ----------------------------------------------
+
 			if (i < 10)
 			{
-				rackedInst = Host.Objects.getObjectByUrl
-					("://hostapp/DocumentManager/ActiveDocument/Environment/Synths/Inst" + "0" + i)
-					
-				if (rackedInst == undefined || rackedInst == "" || rackedInst.findParameter('deviceName') == undefined || rackedInst == null) {continue}
+				Instrument = Host.Objects.getObjectByUrl
+					("://hostapp/DocumentManager/ActiveDocument/Environment/Synths/Inst0" + i)
+				
+				// validity check	
+				if (Instrument == undefined || Instrument == "" || Instrument.findParameter('deviceName') == undefined || Instrument == null) {continue}
 
-				// load the two arrays, the name and the URL
-				loadedInstrumentNames.push(rackedInst.findParameter("deviceName").string)
-				instrumentURLs.push("://hostapp/DocumentManager/ActiveDocument/Environment/Synths/Inst" + "0" + i)
+				// if valid, load the two arrays, the instrument name and the object URL
+				InstrumentNames.push(Instrument.findParameter("deviceName").string)
+				InstrumentURLs.push("://hostapp/DocumentManager/ActiveDocument/Environment/Synths/Inst0"  + i)
 			}
 			else
 			{
-				rackedInst = Host.Objects.getObjectByUrl
+				Instrument = Host.Objects.getObjectByUrl
 					("://hostapp/DocumentManager/ActiveDocument/Environment/Synths/Inst" + i)
 
-				if (rackedInst == undefined || rackedInst == "" || rackedInst.findParameter('deviceName') == undefined || rackedInst == null) {continue}
+				// validity check		
+				if (Instrument == undefined || Instrument == "" || Instrument.findParameter('deviceName') == undefined || Instrument == null) {continue}
 
-				// load the two arrays, the name and the URL
-				loadedInstrumentNames.push(rackedInst.findParameter("deviceName").string)
-				instrumentURLs.push("://hostapp/DocumentManager/ActiveDocument/Environment/Synths/Inst"  + i)
+				// if valid, load the two arrays, the instrument name and the object URL
+				InstrumentNames.push(Instrument.findParameter("deviceName").string)
+				InstrumentURLs.push("://hostapp/DocumentManager/ActiveDocument/Environment/Synths/Inst"  + i)
 			}
 		}
 
 		// ------------------------------------------------------------------------
 
 		// there are no instruments in the rack, do nothing.
-		if (loadedInstrumentNames.length == 0) {return}
+		if (InstrumentNames.length == 0) {return}
+
+		// ------------------------------------------------------------------------
 		
-		// iterate the selected tracks to rename the instruments
+		// iterate the tracks to rename the instruments
 		for (i = 0; i < trackList.numTracks; i++)
 		{ 
 			// get the current selected track
 			var track = trackList.getTrack(i);
 
-			// skip if it has no audioo channel or if it's not a music track
-			if(track.channel == undefined || track.channel.channelType != "MusicTrack") 
+			// skip if it's not a music track or if it has no mixer channel
+			if(track.channel.channelType != "MusicTrack"  || track.channel == undefined)
 				{continue}
 
 			// otherwise, get it's assigned instrument name
 			var currentInstrumentName = track.channel.findParameter('outputDeviceList').string;
 
 			// find the current instrument name in the array of racked instruments
-			var index = loadedInstrumentNames.indexOf(currentInstrumentName)
+			var index = InstrumentNames.indexOf(currentInstrumentName)
 
 			// if not found, do nothing
 			if (index < 0) {continue}
 		
 			// if the name is found in the array, use the URL string from
 			// the second array (same index) to target and rename the instrument
-			Host.Objects.getObjectByUrl	(instrumentURLs[index])
+			Host.Objects.getObjectByUrl	(InstrumentURLs[index])
 			.findParameter("deviceName").setValue(track.name, true)
 		}
 		
