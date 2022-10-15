@@ -81,6 +81,7 @@
 			// format with leading zero if single digit, Inst01, etc
 			if (i < 10) {instStr = "Inst0" + i} else {instStr = "Inst" + i}
 
+			// see if this instrument exists
 			var instrument = instrumentRack.find(instStr)
 
 			if (instrument)  // if it's found, push the name and url to the array 
