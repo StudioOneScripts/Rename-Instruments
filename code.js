@@ -40,10 +40,10 @@
 			if(track.channel.channelType != "MusicTrack" || track.channel == undefined)
 				{continue}
 
-			// Otherwise, get the connected instruments' name for matching
+			// Otherwise, get the connected instrument name for matching
 			var currentInstrumentName = track.channel.findParameter('outputDeviceList').string;
 
-			// Find the current instrument name in the array of racked instruments.
+			// Find the current instrument name in the array of all instruments.
 			// No two instruments can ever have the same name, so any match will be valid.
 			var index = this.Instruments.indexOf(currentInstrumentName)
 
