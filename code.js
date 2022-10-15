@@ -21,7 +21,8 @@
 
 		// --------------------------------------------
 
-		// This function loads all instrument names and object urls into an array
+		// This function loads all instrument names and 
+		// object urls into an array named this.Instruments
 		this.loadInstruments()
 
 		// if there are no instruments found in the rack, exit.
@@ -80,7 +81,7 @@
 			var instStr = ""
 			
 			// format with leading zero if single digit, Inst01, etc
-			if (i < 10) {instStr = "Inst0" + i} else {instStr = "Inst" + i}
+			if (i < 10) {instStr = ("Inst0" + i)} else {instStr = ("Inst" + i)}
 
 			// see if this instrument exists
 			var instrument = instrumentRack.find(instStr)
@@ -88,7 +89,7 @@
 			if (instrument)  // if it's found, push the name and url to the array 
 			{
 				this.Instruments.push(instrument.findParameter("deviceName").string)
-				this.Instruments.push("://hostapp/DocumentManager/ActiveDocument/Environment/Synths/" + instStr  )
+				this.Instruments.push("://hostapp/DocumentManager/ActiveDocument/Environment/Synths/" + instStr )
 			}
 		}
 	}
