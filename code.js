@@ -66,7 +66,7 @@
 	{
 		/*  Read all of the racked instrument data into an array.
 			Push:  Instrument name for matching wih indexOf()
-			Push:  Instrument object URL for addressing
+			Push:  Instrument object URL for addressing later
 		*/
 
 		this.Instruments = new Array;
