@@ -71,6 +71,7 @@
 
 		this.Instruments = new Array;
 
+		// define instrument rack object
 		let instrumentRack = Host.Objects.getObjectByUrl
 		("://hostapp/DocumentManager/ActiveDocument/Environment/Synths")
 		
