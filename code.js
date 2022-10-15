@@ -73,35 +73,20 @@
 
 		let instrumentRack = Host.Objects.getObjectByUrl
 		("://hostapp/DocumentManager/ActiveDocument/Environment/Synths")
-
-		// ---------------------------------------------------------------------------
-		//  Instrument URLs require leading zeros if the number is a single digit
-		//  Inst01, Inst02, etc.  We search and test for each possible number
-		// ---------------------------------------------------------------------------
 		
 		for (i = 1; i < 501; i++)
 		{
-			if (i < 10)
-			{
-				// look for instrument when i is a single digit
-				var instrument = instrumentRack.find("Inst0" + i)
+			var instStr = ""
+			
+			// format with leading zero if single digit, Inst01, etc
+			if (i < 10) {instStr = "Inst0" + i} else {instStr = "Inst" + i}
 
-				if (instrument)  // if it's found, push the name and url to the array 
-				{
-					this.Instruments.push(instrument.findParameter("deviceName").string)
-					this.Instruments.push("://hostapp/DocumentManager/ActiveDocument/Environment/Synths/Inst0"  + i)
-				}
-			}
-			else
-			{
-				// look for instrument when i is double digit or greater
-				var instrument = instrumentRack.find("Inst" + i)
+			var instrument = instrumentRack.find(instStr)
 
-				if (instrument)  // if it's found, push the name and url to the array
-				{
-					this.Instruments.push(instrument.findParameter("deviceName").string)
-					this.Instruments.push("://hostapp/DocumentManager/ActiveDocument/Environment/Synths/Inst"  + i)
-				}	
+			if (instrument)  // if it's found, push the name and url to the array 
+			{
+				this.Instruments.push(instrument.findParameter("deviceName").string)
+				this.Instruments.push("://hostapp/DocumentManager/ActiveDocument/Environment/Synths/" + instStr  )
 			}
 		}
 	}
