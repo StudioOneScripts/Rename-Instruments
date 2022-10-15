@@ -24,27 +24,28 @@
 
 		// if there are no instruments found in the rack, exit.
 		if (this.Instruments.length == 0) {return}
-
-		// ------------------------------------------------------------------------
 		
-		// Iterate the tracks 
+		// **************************************************************************
+		// **************** ITERATE TRACKS AND RENAME INSTRUMENTS *******************
+		// **************************************************************************
+		
 		for (i = 0; i < trackList.numTracks; i++)
 		{ 
 			// Get the current track
 			var track = trackList.getTrack(i);
 
-			// If it's not a music track or it has no mixer channel, skip over it
+			// If it's not a music track or if it has no mixer channel, skip it
 			if(track.channel.channelType != "MusicTrack" || track.channel == undefined)
 				{continue}
 
-			// Otherwise, get it's connected instrument name for matching
+			// Otherwise, get the connected instruments' name for matching
 			var currentInstrumentName = track.channel.findParameter('outputDeviceList').string;
 
 			// Find the current instrument name in the array of racked instruments.
 			// No two instruments can ever have the same name, so any match will be valid.
 			var index = this.Instruments.indexOf(currentInstrumentName)
 
-			// If not found, do nothing
+			// If not found, do nothing.
 			if (index < 0) {continue}
 		
 			// If the name is found in the array, use the URL string from
@@ -63,7 +64,7 @@
 	{
 		/*  Read all of the racked instrument data into an array.
 			Push:  Instrument name for matching wih indexOf()
-			Push next:  Instrument object URL for addressing
+			Push:  Instrument object URL for addressing
 		*/
 
 		this.Instruments = new Array;
@@ -71,14 +72,13 @@
 		let synthRack = Host.Objects.getObjectByUrl
 		("://hostapp/DocumentManager/ActiveDocument/Environment/Synths")
 
-		// looking fo up to 500 instruments
+		// ---------------------------------------------------------------------------
+		//  Instrument URLs require leading zeros if the number is a single digit
+		//  Inst01, Inst02, etc.  We search and test for each possible number
+		// ---------------------------------------------------------------------------
+		
 		for (i = 1; i < 501; i++)
 		{
-			// ---------------------------------------------------------------------------
-			//  Instrument URLs require leading zeros if the number is a single digit
-			//  Inst01, Inst02, etc,.  We search and test for each possible number
-			// ---------------------------------------------------------------------------
-
 			if (i < 10)
 			{
 				// look for instrument i when i is a single digit
@@ -105,7 +105,7 @@
 	}
 }
 
-// entry  ------------------------------------------------------
+// Entry  ------------------------------------------------------
 function createInstance()
 {
 	return new renameInstrumentsAfterTracks();
