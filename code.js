@@ -94,7 +94,7 @@
 	}
 }
 
-// Entry  ------------------------------------------------------
+// Entry  -------------------------------------
 function createInstance()
 {
 	return new renameInstrumentsAfterTracks();
