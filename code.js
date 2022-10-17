@@ -22,7 +22,8 @@
 		// --------------------------------------------
 
 		// This function loads all instrument names and 
-		// object urls into an array named this.Instruments
+		// object urls into the array
+		this.Instruments = new Array;
 		this.loadInstruments()
 
 		// if there are no instruments found in the rack, exit.
@@ -69,8 +70,6 @@
 			Push:  Instrument name for matching wih indexOf()
 			Push:  Instrument object URL for addressing later
 		*/
-
-		this.Instruments = new Array;
 
 		// define instrument rack object
 		let instrumentRack = Host.Objects.getObjectByUrl
