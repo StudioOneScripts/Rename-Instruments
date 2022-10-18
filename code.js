@@ -66,9 +66,9 @@
 
 	this.loadInstruments = function ()
 	{
-		/*  Read all of the racked instrument data into an array.
+		/*  Read all racked instruments data into an array.
 			Push:  Instrument name for matching wih indexOf()
-			Push:  Instrument object URL for addressing later
+			Push:  Instrument object URL for addressing
 		*/
 
 		// define instrument rack object
