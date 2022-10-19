@@ -26,7 +26,7 @@
 		this.synthRack = environment.find ("Synths");
 
 		// **************************************************************************
-		// *************LOAD INSTRUMENT NAMES AND URLS FROM THE RACK ****************
+		// ************ LOAD INSTRUMENT NAMES AND URLS FROM THE RACK ****************
 		// **************************************************************************
 
 		this.Instruments = new Array;
