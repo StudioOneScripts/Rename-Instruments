@@ -30,7 +30,7 @@
 		if (this.Instruments.length == 0) {return}
 		
 		// **************************************************************************
-		// **************** ITERATE TRACKS AND RENAME INSTRUMENTS *******************
+		// ********** ITERATE TRACKS AND RENAME INSTRUMENTS AFTER TRACKS ************
 		// **************************************************************************
 		
 		for (i = 0; i < trackList.numTracks; i++)
@@ -79,7 +79,7 @@
 		{
 			var instStr = ""
 			
-			// format with leading zero if single digit, Inst01, etc
+			// format with leading zero if single digit, Inst01, Inst02, etc
 			if (i < 10) {instStr = ("Inst0" + i)} else {instStr = ("Inst" + i)}
 
 			// check if this instrument exists
