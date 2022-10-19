@@ -21,10 +21,37 @@
 
 		// --------------------------------------------
 
-		// This function loads all instrument names and 
-		// object urls into the array
+		// identify the instrument rack
+		var environment = context.functions.root.environment;
+		this.synthRack = environment.find ("Synths");
+
+		// **************************************************************************
+		// *************LOAD INSTRUMENT NAMES AND URLS FROM THE RACK ****************
+		// **************************************************************************
+
 		this.Instruments = new Array;
-		this.loadInstruments()
+
+		/*  Read all racked instruments data into the array.
+			Push:  Instrument name for matching wih indexOf()
+			Push:  Instrument object URL for addressing
+		*/
+
+		for (i = 1; i < 501; i++)
+		{
+			var instStr = ""
+			
+			// format with leading zero if single digit, Inst01, Inst02, etc
+			if (i < 10) {instStr = ("Inst0" + i)} else {instStr = ("Inst" + i)}
+
+			// check if this instrument exists
+			var instrument = this.synthRack.find(instStr)
+
+			if (instrument)  // if it's found, push the name and url to the array 
+			{
+				this.Instruments.push(instrument.findParameter("deviceName").string)
+				this.Instruments.push("://hostapp/DocumentManager/ActiveDocument/Environment/Synths/" + instStr )
+			}
+		}
 
 		// if there are no instruments found in the rack, exit.
 		if (this.Instruments.length == 0) {return}
@@ -59,39 +86,6 @@
 		}
 		
 		return Host.Results.kResultOk;
-	}
-
-	// **************************************************************************
-	// ******** FUNCTION TO LOAD INSTRUMENT NAMES AND URLS FROM THE RACK ********
-	// **************************************************************************
-
-	this.loadInstruments = function ()
-	{
-		/*  Read all racked instruments data into an array.
-			Push:  Instrument name for matching wih indexOf()
-			Push:  Instrument object URL for addressing
-		*/
-
-		// define instrument rack object
-		let instrumentRack = Host.Objects.getObjectByUrl
-		("://hostapp/DocumentManager/ActiveDocument/Environment/Synths")
-		
-		for (i = 1; i < 501; i++)
-		{
-			var instStr = ""
-			
-			// format with leading zero if single digit, Inst01, Inst02, etc
-			if (i < 10) {instStr = ("Inst0" + i)} else {instStr = ("Inst" + i)}
-
-			// check if this instrument exists
-			var instrument = instrumentRack.find(instStr)
-
-			if (instrument)  // if it's found, push the name and url to the array 
-			{
-				this.Instruments.push(instrument.findParameter("deviceName").string)
-				this.Instruments.push("://hostapp/DocumentManager/ActiveDocument/Environment/Synths/" + instStr )
-			}
-		}
 	}
 }
 
