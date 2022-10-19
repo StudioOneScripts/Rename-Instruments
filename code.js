@@ -54,7 +54,8 @@
 		
 			// If the name is found in the array, use the URL string from
 			// index + 1, the next array item, to target and rename the instrument
-			Host.Objects.getObjectByUrl(this.Instruments[index + 1]).findParameter("deviceName").setValue(track.name, true)
+			Host.Objects.getObjectByUrl(this.Instruments[index + 1]).findParameter("deviceName")
+				.setValue(track.name, true)
 		}
 		
 		return Host.Results.kResultOk;
