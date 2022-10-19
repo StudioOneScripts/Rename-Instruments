@@ -30,7 +30,7 @@
 		if (this.Instruments.length == 0) {return}
 		
 		// **************************************************************************
-		// ********** ITERATE TRACKS AND RENAME INSTRUMENTS AFTER TRACKS ************
+		// ******************* RENAME INSTRUMENTS AFTER TRACKS **********************
 		// **************************************************************************
 		
 		for (i = 0; i < trackList.numTracks; i++)
